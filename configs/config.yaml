@@ -1,0 +1,43 @@
+sms:
+  sourceDirectory: "skillbox-diploma"
+  sourceFileName: "sms.data"
+  targetDirectory: "."
+  targetFileName: "sms.csv"
+
+mms:
+  scheme: "http"
+  address: "127.0.0.1"
+  port: 8383
+  endpoint: "mms"
+
+voice:
+  sourceDirectory: "skillbox-diploma"
+  sourceFileName: "voice.data"
+  targetDirectory: "."
+  targetFileName: "voice.csv"
+
+mail:
+  sourceDirectory: "skillbox-diploma"
+  sourceFileName: "email.data"
+  targetDirectory: "."
+  targetFileName: "email.csv"
+
+billing:
+  sourceDirectory: "skillbox-diploma"
+  sourceFileName: "billing.data"
+
+support:
+  scheme: "http"
+  address: "127.0.0.1"
+  port: 8383
+  endpoint: "support"
+
+accendent:
+  scheme: "http"
+  address: "127.0.0.1"
+  port: 8383
+  endpoint: "accendent"
+
+web:
+  address: "127.0.0.1"
+  port: 8585
