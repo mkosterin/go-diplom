@@ -1,8 +1,15 @@
 package dataStructs
 
-import (
-	"sort"
-)
+type RawStruct struct {
+	SMS       []SmsData
+	MMS       []MMSData
+	VoiceData []VoiceData
+	Email     []EmailData
+	Billing   BillingData
+	Support   []SupportData
+	Incidents []IncidentData
+	Error     []error
+}
 
 type ResultT struct {
 	Status bool       `json:"status"` // True, если все этапы сбора данных прошли успешно, False во всех остальных случаях
@@ -14,12 +21,13 @@ type ResultSetT struct {
 	SMS       [][]SmsData              `json:"sms"`
 	MMS       [][]MMSData              `json:"mms"`
 	VoiceCall []VoiceData              `json:"voice_call"`
-	Email     map[string][][]EmailData `json: email"`
-	Billing   BillingData              `json: billing"`
-	Support   []int                    `json: support"`
+	Email     map[string][][]EmailData `json:"email"`
+	Billing   BillingData              `json:"billing"`
+	Support   []int                    `json:"support"`
 	Incidents []IncidentData           `json:"incident"`
 }
 
+/*
 func NewResultT(sms []SmsData, mms []MMSData,
 	voice []VoiceData, email []EmailData, billing BillingData,
 	support []SupportData, incident []IncidentData, countries map[string]string) *ResultT {
@@ -135,3 +143,4 @@ func newResultSetT(sms []SmsData, mms []MMSData,
 
 	return &result
 }
+*/

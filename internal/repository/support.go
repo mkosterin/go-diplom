@@ -7,15 +7,16 @@ import (
 	"net/http"
 )
 
-func ReadSupport(httpResponse *http.Response) []dataStructs.SupportData {
+func ReadSupport(httpResponse *http.Response) ([]dataStructs.SupportData, error) {
 	var rowData, parsedData []dataStructs.SupportData
 	parsedData = make([]dataStructs.SupportData, 0)
 	err := json.NewDecoder(httpResponse.Body).Decode(&rowData)
 	if err != nil {
-		log.Fatal("Unable to parse JSON with Support ", err)
+		log.Printf("Unable to parse JSON with Support ", err)
+		return parsedData, err
 	}
 	for i := 0; i < len(rowData); i++ {
 		parsedData = append(parsedData, rowData[i])
 	}
-	return parsedData
+	return parsedData, nil
 }

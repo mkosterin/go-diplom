@@ -9,15 +9,17 @@ import (
 	"strings"
 )
 
-func BillingReadFile(filePath string) (response dataStructs.BillingData) {
+func BillingReadFile(filePath string) (dataStructs.BillingData, error) {
+	var response dataStructs.BillingData
 	body, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		log.Fatalf("unable to read file: %v", err)
+		log.Printf("unable to read file: %v", err)
+		return response, err
 	}
 	decNumber := number(string(body))
 	binNumber := bitMask(decNumber)
 	response = generateStruct(binNumber)
-	return
+	return response, nil
 }
 
 func number(line string) (result uint8) {

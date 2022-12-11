@@ -7,11 +7,12 @@ import (
 	"os"
 )
 
-func ReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.SmsData) {
+func SmsReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.SmsData, err error) {
 	//Read source file
 	f, err := os.Open(filePath)
 	if err != nil {
-		log.Fatal("Unable to read input file "+filePath, err)
+		log.Printf("Unable to read input file "+filePath, err)
+		return
 	}
 	defer f.Close()
 
@@ -33,12 +34,13 @@ func ReadCsvFile(filePath string, countries map[string]string) (response []dataS
 		}
 	}
 	if err != nil {
-		log.Fatal("Unable to parse file as CSV for "+filePath, err)
+		log.Printf("Unable to parse file as CSV for "+filePath, err)
+		return
 	}
-	return response
+	return response, nil
 }
 
-func WriteCsvFile(smsStore *[]dataStructs.SmsData, filePath string) error {
+func SmsWriteCsvFile(smsStore *[]dataStructs.SmsData, filePath string) error {
 	recordsToWrite := make([][]string, 0)
 	for i := 0; i < len(*smsStore); i++ {
 		f0 := (*smsStore)[i].Country
@@ -50,13 +52,13 @@ func WriteCsvFile(smsStore *[]dataStructs.SmsData, filePath string) error {
 	}
 	f, err := os.Create(filePath)
 	if err != nil {
-		log.Fatal("Unable to write output file "+filePath, err)
+		log.Printf("Unable to write output file "+filePath, err)
 	}
 	defer f.Close()
 	w := csv.NewWriter(f)
 	w.WriteAll(recordsToWrite)
 	if err := w.Error(); err != nil {
-		log.Fatalln("error writing csv:", err)
+		log.Printf("error writing csv:", err)
 		return err
 	}
 	return nil

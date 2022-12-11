@@ -8,11 +8,13 @@ import (
 	"strconv"
 )
 
-func MailReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.EmailData) {
+func MailReadCsvFile(filePath string, countries map[string]string) ([]dataStructs.EmailData, error) {
 	//Read source file
+	var response []dataStructs.EmailData
 	f, err := os.Open(filePath)
 	if err != nil {
-		log.Fatal("Unable to read input file "+filePath, err)
+		log.Printf("Unable to read input file "+filePath, err)
+		return response, err
 	}
 	defer f.Close()
 
@@ -33,9 +35,10 @@ func MailReadCsvFile(filePath string, countries map[string]string) (response []d
 		}
 	}
 	if err != nil {
-		log.Fatal("Unable to parse file as CSV for "+filePath, err)
+		log.Printf("Unable to parse file as CSV for "+filePath, err)
+		return response, err
 	}
-	return response
+	return response, nil
 }
 
 func MailWriteCsvFile(mailStore *[]dataStructs.EmailData, filePath string) error {
@@ -49,13 +52,13 @@ func MailWriteCsvFile(mailStore *[]dataStructs.EmailData, filePath string) error
 	}
 	f, err := os.Create(filePath)
 	if err != nil {
-		log.Fatal("Unable to write output file "+filePath, err)
+		log.Printf("Unable to write output file "+filePath, err)
 	}
 	defer f.Close()
 	w := csv.NewWriter(f)
 	w.WriteAll(recordsToWrite)
 	if err := w.Error(); err != nil {
-		log.Fatalln("error writing csv:", err)
+		log.Printf("error writing csv:", err)
 		return err
 	}
 	return nil

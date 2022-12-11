@@ -7,19 +7,20 @@ import (
 	"net/http"
 )
 
-func ReadMms(httpResponse *http.Response, countries map[string]string) []dataStructs.MMSData {
+func ReadMms(httpResponse *http.Response, countries map[string]string) ([]dataStructs.MMSData, error) {
 	var rowData, parsedData []dataStructs.MMSData
 	parsedData = make([]dataStructs.MMSData, 0)
 	err := json.NewDecoder(httpResponse.Body).Decode(&rowData)
 	if err != nil {
-		log.Fatal("Unable to parse JSON with MMS ", err)
+		log.Printf("Unable to parse JSON with MMS ", err)
+		return parsedData, err
 	}
 	for i := 0; i < len(rowData); i++ {
 		if mmsChecker(rowData[i], countries) == true {
 			parsedData = append(parsedData, rowData[i])
 		}
 	}
-	return parsedData
+	return parsedData, nil
 }
 
 func mmsChecker(line dataStructs.MMSData, countries map[string]string) bool {

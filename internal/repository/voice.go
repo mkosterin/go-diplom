@@ -9,11 +9,13 @@ import (
 	"strconv"
 )
 
-func VoiceReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.VoiceData) {
+func VoiceReadCsvFile(filePath string, countries map[string]string) ([]dataStructs.VoiceData, error) {
 	//Read source file
+	var response []dataStructs.VoiceData
 	f, err := os.Open(filePath)
 	if err != nil {
-		log.Fatal("Unable to read input file "+filePath, err)
+		log.Printf("Unable to read input file "+filePath, err)
+		return response, err
 	}
 	defer f.Close()
 
@@ -40,9 +42,9 @@ func VoiceReadCsvFile(filePath string, countries map[string]string) (response []
 		}
 	}
 	if err != nil {
-		log.Fatal("Unable to parse file as CSV for "+filePath, err)
+		log.Printf("Unable to parse file as CSV for "+filePath, err)
 	}
-	return response
+	return response, err
 }
 
 func VoiceWriteCsvFile(voiceStore *[]dataStructs.VoiceData, filePath string) error {
@@ -61,13 +63,13 @@ func VoiceWriteCsvFile(voiceStore *[]dataStructs.VoiceData, filePath string) err
 	}
 	f, err := os.Create(filePath)
 	if err != nil {
-		log.Fatal("Unable to write output file "+filePath, err)
+		log.Printf("Unable to write output file "+filePath, err)
 	}
 	defer f.Close()
 	w := csv.NewWriter(f)
 	w.WriteAll(recordsToWrite)
 	if err := w.Error(); err != nil {
-		log.Fatalln("error writing csv:", err)
+		log.Printf("error writing csv:", err)
 		return err
 	}
 	return nil
