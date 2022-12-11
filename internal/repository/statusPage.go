@@ -2,6 +2,7 @@ package repository
 
 import (
 	"diplom/internal/dataStructs"
+	"fmt"
 	"sort"
 )
 
@@ -83,6 +84,7 @@ func prepareData(rawStruct dataStructs.RawStruct, countries map[string]string) (
 		stPageSet.Email[key][0] = value[:3]
 		stPageSet.Email[key][1] = value[len(value)-4 : len(value)-1]
 	}
+	fmt.Println(stPageSet.Email)
 
 	//Billing section
 	stPageSet.Billing = rawStruct.Billing

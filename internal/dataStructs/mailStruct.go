@@ -6,5 +6,5 @@ var MailOperators = []string{"Gmail", "Yahoo", "Hotmail", "MSN", "Orange", "Comc
 type EmailData struct {
 	Country      string `json:"country"`
 	Provider     string `json:"provider"`
-	DeliveryTime int    `json:"deliveryTime"`
+	DeliveryTime int    `json:"delivery_time"`
 }
