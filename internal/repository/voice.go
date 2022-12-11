@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"diplom/pkg/dataStructs"
+	"diplom/internal/dataStructs"
 	"encoding/csv"
 	"fmt"
 	"log"
@@ -9,7 +9,7 @@ import (
 	"strconv"
 )
 
-func VoiceReadCsvFile(filePath string) (response []dataStructs.VoiceData) {
+func VoiceReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.VoiceData) {
 	//Read source file
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -23,7 +23,7 @@ func VoiceReadCsvFile(filePath string) (response []dataStructs.VoiceData) {
 	for {
 		line, _ := csvReader.Read()
 		if line != nil {
-			if voiceChecker(line) {
+			if voiceChecker(line, countries) {
 				buffer.Country = line[0]
 				buffer.Load, _ = strconv.Atoi(line[1])
 				buffer.AvgAnswerTime, _ = strconv.Atoi(line[2])
@@ -73,7 +73,7 @@ func VoiceWriteCsvFile(voiceStore *[]dataStructs.VoiceData, filePath string) err
 	return nil
 }
 
-func voiceChecker(line []string) bool {
+func voiceChecker(line []string, countries map[string]string) bool {
 	//Syntax check, according the rules
 	if len(line) != 8 {
 		return false

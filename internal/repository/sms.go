@@ -1,14 +1,13 @@
 package repository
 
 import (
-	"diplom/pkg/dataStructs"
+	"diplom/internal/dataStructs"
 	"encoding/csv"
 	"log"
 	"os"
-	"strconv"
 )
 
-func MailReadCsvFile(filePath string) (response []dataStructs.EmailData) {
+func ReadCsvFile(filePath string, countries map[string]string) (response []dataStructs.SmsData) {
 	//Read source file
 	f, err := os.Open(filePath)
 	if err != nil {
@@ -18,14 +17,15 @@ func MailReadCsvFile(filePath string) (response []dataStructs.EmailData) {
 
 	csvReader := csv.NewReader(f)
 	csvReader.Comma = ';'
-	var buffer dataStructs.EmailData
+	var buffer dataStructs.SmsData
 	for {
 		line, _ := csvReader.Read()
 		if line != nil {
-			if mailChecker(line) {
+			if smsChecker(line, countries) {
 				buffer.Country = line[0]
-				buffer.Provider = line[1]
-				buffer.DeliveryTime, _ = strconv.Atoi(line[2])
+				buffer.Bandwidth = line[1]
+				buffer.ResponseTime = line[2]
+				buffer.Provider = line[3]
 				response = append(response, buffer)
 			}
 		} else {
@@ -38,13 +38,14 @@ func MailReadCsvFile(filePath string) (response []dataStructs.EmailData) {
 	return response
 }
 
-func MailWriteCsvFile(mailStore *[]dataStructs.EmailData, filePath string) error {
+func WriteCsvFile(smsStore *[]dataStructs.SmsData, filePath string) error {
 	recordsToWrite := make([][]string, 0)
-	for i := 0; i < len(*mailStore); i++ {
-		f0 := (*mailStore)[i].Country
-		f1 := (*mailStore)[i].Provider
-		f2 := strconv.Itoa((*mailStore)[i].DeliveryTime)
-		f := []string{f0, f1, f2}
+	for i := 0; i < len(*smsStore); i++ {
+		f0 := (*smsStore)[i].Country
+		f1 := (*smsStore)[i].Bandwidth
+		f2 := (*smsStore)[i].ResponseTime
+		f3 := (*smsStore)[i].Provider
+		f := []string{f0, f1, f2, f3}
 		recordsToWrite = append(recordsToWrite, f)
 	}
 	f, err := os.Create(filePath)
@@ -61,16 +62,16 @@ func MailWriteCsvFile(mailStore *[]dataStructs.EmailData, filePath string) error
 	return nil
 }
 
-func mailChecker(line []string) bool {
+func smsChecker(line []string, countries map[string]string) bool {
 	//Syntax check, according the rules
-	if len(line) != 3 {
+	if len(line) != 4 {
 		return false
 	}
 	if countries[line[0]] == "" {
 		return false
 	}
-	for i := 0; i < len(dataStructs.MailOperators); i++ {
-		if line[1] == dataStructs.MailOperators[i] {
+	for i := 0; i < len(dataStructs.SmsOperators); i++ {
+		if line[3] == dataStructs.SmsOperators[i] {
 			return true
 		}
 	}

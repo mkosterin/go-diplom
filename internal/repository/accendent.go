@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"diplom/pkg/dataStructs"
+	"diplom/internal/dataStructs"
 	"encoding/json"
 	"log"
 	"net/http"

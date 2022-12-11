@@ -8,8 +8,6 @@ import (
 	"os"
 )
 
-var countries = GetCountries()
-
 func GetCountries() map[string]string {
 	resp, err := http.Get("http://country.io/names.json")
 	if err != nil {

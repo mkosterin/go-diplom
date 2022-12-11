@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"diplom/pkg/dataStructs"
+	"diplom/internal/dataStructs"
 	"io/ioutil"
 	"log"
 	"math"

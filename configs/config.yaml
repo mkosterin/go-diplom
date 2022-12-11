@@ -1,7 +1,7 @@
 sms:
   sourceDirectory: "skillbox-diploma"
   sourceFileName: "sms.data"
-  targetDirectory: "."
+  targetDirectory: "./data"
   targetFileName: "sms.csv"
 
 mms:
@@ -13,13 +13,13 @@ mms:
 voice:
   sourceDirectory: "skillbox-diploma"
   sourceFileName: "voice.data"
-  targetDirectory: "."
+  targetDirectory: "./data"
   targetFileName: "voice.csv"
 
 mail:
   sourceDirectory: "skillbox-diploma"
   sourceFileName: "email.data"
-  targetDirectory: "."
+  targetDirectory: "./data"
   targetFileName: "email.csv"
 
 billing:
