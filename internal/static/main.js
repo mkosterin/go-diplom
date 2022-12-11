@@ -192,7 +192,8 @@
         renderIncidents(json.data.incident);
 
         console.log('YES');
-        renderEmailCharts(json.data.email);
+        Object.values(json.data.email).map((item) => {renderEmailCharts(item)});
+        //renderEmailCharts(json.data.email);
     };
 
     ready(() => {
