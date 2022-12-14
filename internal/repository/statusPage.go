@@ -10,7 +10,7 @@ func RefreshStatusPage(config dataStructs.Config, countries map[string]string) (
 	rawData := collectData(config, countries)
 
 	stPage.Data = prepareData(rawData, countries)
-	errors, status := errorHandler(rawData.Error)
+	errors, status := errorHandler(rawData.Error, config)
 	stPage.Error = errors
 	stPage.Status = status
 	return
@@ -124,12 +124,16 @@ func prepareData(rawStruct dataStructs.RawStruct, countries map[string]string) (
 	return
 }
 
-func errorHandler(errors []error) (errorsString string, status bool) {
+func errorHandler(errors []error, config dataStructs.Config) (errorsString string, status bool) {
 	if len(errors) == 0 {
 		return "", true
 	} else {
-		for i := range errors {
-			errorsString = errorsString + errors[i].Error() + "\n"
+		if config.Debug {
+			for i := range errors {
+				errorsString = errorsString + errors[i].Error() + "\n"
+			}
+		} else {
+			errorsString = "Some errors has been happened while collection data from sources"
 		}
 		status = false
 		return

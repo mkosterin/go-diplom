@@ -1,3 +1,6 @@
+debug:
+  enabled: false
+
 sms:
   sourceDirectory: "skillbox-diploma"
   sourceFileName: "sms.data"

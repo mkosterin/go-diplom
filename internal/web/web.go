@@ -21,11 +21,14 @@ func Router(host string, config dataStructs.Config, countries map[string]string)
 
 	r.Get("/api", func(w http.ResponseWriter, r *http.Request) {
 		// curl http://localhost:8585/api
-		w.WriteHeader(200)
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "application/json; charset=utf-8")
+		w.WriteHeader(http.StatusOK)
 		w.Write(structToBytes(repository.RefreshStatusPage(config, countries)))
 	})
 	workDir, _ := os.Getwd()
-	filesDir := http.Dir(filepath.Join(workDir, "internal/static"))
+	filesDir := http.Dir(filepath.Join(workDir, "./web-static"))
 	FileServer(r, "/", filesDir)
 
 	http.ListenAndServe(host, r)
