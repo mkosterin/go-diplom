@@ -12,4 +12,5 @@ type Config struct {
 	SupportSource       string
 	AccendendSource     string
 	WebListernerAddress string
+	Debug               bool
 }

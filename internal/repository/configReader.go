@@ -10,6 +10,7 @@ func ConfigReader() (config dataStructs.Config) {
 	if err := initConfig(); err != nil {
 		log.Fatalf("error initializing configs: %s", err.Error())
 	}
+	config.Debug = viper.GetBool("debug.enabled")
 	config.SmsSource = viper.GetString("sms.sourceDirectory") + "/" + viper.GetString("sms.sourceFileName")
 	config.SmsTarget = viper.GetString("sms.targetDirectory") + "/" + viper.GetString("sms.targetFileName")
 	config.MmsSource = viper.GetString("mms.scheme") + "://" +
